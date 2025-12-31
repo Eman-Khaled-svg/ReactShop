@@ -62,6 +62,16 @@ export default function Navbar() {
               >
                 About
               </NavLink>
+              
+            </li>
+            <li style={{color:'white',fontWeight:'bold',fontSize:'19px'}}>
+              <NavLink
+                to="/cart"
+                className="cart-link ms-3"
+                onClick={closeMenu}
+              >
+                <i className="fa-solid fa-basket-shopping" style={{color:'white',fontWeight:'bold',fontSize:'19px'}}></i>
+              </NavLink>
             </li>
           </ul>
         </div>
