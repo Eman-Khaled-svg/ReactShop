@@ -1,14 +1,19 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { CartContext } from "../context/CartContext";
 import { Helmet } from "react-helmet"
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"
+import {useContext } from "react";
 
 
 export default function ProductDetails() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+const { addToCart } = useContext(CartContext);
 
   const getProductDetails = async () => {
     setLoading(true)
@@ -35,16 +40,18 @@ export default function ProductDetails() {
       </div>
     )
   }
-
-  if (!product) return null
-  const addToCart = () => {
+if (!product) return <h2 className="text-center mt-5">Product not found</h2>;
+  const handleAddToCart = () => {
+  addToCart(product);  // أضف المنتج للكارت
   Swal.fire({
     icon: "success",
     title: "Added to Cart!",
     text: `${product.title} has been added successfully.`,
     confirmButtonColor: "#0d6efd",
-  })
-}
+  }).then(() => {
+    navigate("/cart"); // روح لصفحة الكارت بعد الضغط على OK
+  });
+};
 
 
   return (
@@ -71,9 +78,10 @@ export default function ProductDetails() {
         <p className="text-muted">{product.category}</p>
         <p style={{lineHeight:'2.5'}}>{product.description}</p>
         <h4 className="text-success">${product.price}</h4>
-        <button onClick={addToCart} className="btn btn-primary btn-lg" style={{marginLeft:'180px',marginTop:'20px'}}>
+       <button onClick={handleAddToCart} className="btn btn-primary btn-lg">
   Add to Cart
 </button>
+
 
       </div>
     </div>
